@@ -1,0 +1,11 @@
+{
+  "name": "myworldtoken",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://git.numbers21.com/token/myworldtoken.git",
+  "author": "phillip <philosup@numbers21.com>",
+  "license": "MIT",
+  "dependencies": {
+    "hardhat": "^2.9.7"
+  }
+}
