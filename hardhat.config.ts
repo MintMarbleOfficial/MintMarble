@@ -33,13 +33,21 @@ const config: HardhatUserConfig = {
             url: `https://bsc-dataseed.binance.org/`,
             accounts: JSON.parse(process.env.privatekeys_main === undefined ? "[]" : process.env.privatekeys_main),
         },
+        mumbai: {
+            url: `https://rpc-mumbai.matic.today`, //https://matic-mumbai.chainstacklabs.com
+            accounts: JSON.parse(process.env.privatekeys === undefined ? "[]" : process.env.privatekeys),
+        },
+        poly: {
+            url: `https://polygon-rpc.com/`,
+            accounts: JSON.parse(process.env.privatekeys_main === undefined ? "[]" : process.env.privatekeys_main),
+        },
     },
     gasReporter: {
         enabled: process.env.REPORT_GAS !== undefined,
         currency: "USD",
     },
     etherscan: {
-        apiKey: process.env.BSCSCANAPIKEY,
+        apiKey: process.env.POLYSCANAPIKEY,
     },
 };
 

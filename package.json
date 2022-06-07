@@ -6,6 +6,7 @@
   "author": "phillip <philosup@numbers21.com>",
   "license": "MIT",
   "dependencies": {
+    "@openzeppelin/contracts": "^4.6.0",
     "hardhat": "^2.9.7"
   },
   "devDependencies": {
