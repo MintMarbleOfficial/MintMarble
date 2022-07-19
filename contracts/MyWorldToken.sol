@@ -43,7 +43,7 @@ contract LockBalance {
         return totalLocked;
     }
 
-    function AddLockinfo(
+    function addLockinfo(
         address to,
         uint256 amount,
         uint256 releaseTime
@@ -51,25 +51,21 @@ contract LockBalance {
         //remove released lockinfos
         uint256 lockCount = 0;
         for (uint256 i = 0; i < _lockInfo[to].length; i++) {
+            if (i > lockCount) {
+                _lockInfo[to][lockCount] = _lockInfo[to][i];
+            }
             if (_lockInfo[to][i].releaseTime > block.timestamp) {
                 lockCount++;
-            }
-            if (i != lockCount - 1) {
-                _lockInfo[to][lockCount] = _lockInfo[to][i];
             }
         }
         uint256 removeCount = _lockInfo[to].length - lockCount;
         if (lockCount == 0) delete _lockInfo[to];
         else if (removeCount > 0) {
-            // console.log("removed count", removeCount);
             for (uint256 i = 0; i < removeCount; i++) _lockInfo[to].pop();
         }
 
         //add lockinfo if release time
         if (releaseTime > block.timestamp) _lockInfo[to].push(LockInfo(amount, releaseTime));
-        else {
-            // console.log("not added", releaseTime, block.timestamp);
-        }
     }
 }
 
@@ -85,6 +81,10 @@ contract MyWorldToken is ERC20, Ownable, Pausable, BlackList, LockBalance {
 
     function start() public onlyOwner {
         _unpause();
+    }
+
+    function burn(uint256 amount) public {
+        _burn(msg.sender, amount);
     }
 
     //Don't accept ETH or BNB
@@ -117,7 +117,7 @@ contract MyWorldToken is ERC20, Ownable, Pausable, BlackList, LockBalance {
     ) public returns (bool) {
         transfer(to, amount);
 
-        AddLockinfo(to, amount, releaseTime);
+        addLockinfo(to, amount, releaseTime);
 
         return true;
     }
