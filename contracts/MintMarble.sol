@@ -69,8 +69,8 @@ contract LockBalance {
     }
 }
 
-contract MyWorldToken is ERC20, Ownable, Pausable, BlackList, LockBalance {
-    constructor() ERC20("MyWorldToken", "MWT") {
+contract MintMarble is ERC20, Ownable, Pausable, BlackList, LockBalance {
+    constructor() ERC20("Mint Marble", "MIM") {
         uint256 amount = 20_0000_0000 * 10**decimals();
         _mint(_msgSender(), amount);
     }

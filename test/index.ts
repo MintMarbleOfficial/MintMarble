@@ -1,20 +1,20 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import { address_zero, accounts, owner, minter, buyer, receiver, signer, failTest } from "./common";
-import { MyWorldToken } from "../typechain/MyWorldToken";
+import { MintMarble } from "../typechain/MintMarble";
 
 function timeout(ms: number) {
     console.log("waiting", ms);
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
-describe("MyWorldToken", function () {
-    var token: MyWorldToken;
+describe("MintMarble", function () {
+    var token: MintMarble;
     it("token deploy, stop and locktransfer test ", async function () {
-        const MyWorldtokenFactory = await ethers.getContractFactory("MyWorldToken");
+        const MyWorldtokenFactory = await ethers.getContractFactory("MintMarble");
         token = await MyWorldtokenFactory.deploy({ gasLimit: 3000000 });
         await token.deployed();
 
-        console.log("deployed MyWorldToken : ", token.address);
+        console.log("deployed MintMarble : ", token.address);
 
         const supply = await token.totalSupply();
         expect(ethers.utils.formatEther(supply)).equal("2000000000.0");
@@ -34,13 +34,14 @@ describe("MyWorldToken", function () {
 
         //test transferWithLocked
         let release = Math.floor(Date.now() / 1000) + 20;
-        var tx = await token.transferWithLocked(buyer.address, ethers.utils.parseEther("1"), release);
+        let tx = await token.transferWithLocked(buyer.address, ethers.utils.parseEther("1"), release);
         await tx.wait();
         expect(await token.balanceOf(buyer.address)).eq(ethers.utils.parseEther("1"));
         expect(await token.getLockedBalance(buyer.address)).eq(ethers.utils.parseEther("1"));
 
         release = Math.floor(Date.now() / 1000) + 10;
         tx = await token.transferWithLocked(buyer.address, ethers.utils.parseEther("1"), release);
+        await tx.wait();
         expect(await token.balanceOf(buyer.address)).eq(ethers.utils.parseEther("2"));
         let locked = await token.getLockedBalance(buyer.address);
         expect(locked).eq(ethers.utils.parseEther("2"));
@@ -83,7 +84,6 @@ describe("MyWorldToken", function () {
         locked = await token.getLockedBalance(buyer.address);
         console.log(ethers.utils.formatEther(locked));
 
-
         release = Math.floor(Date.now() / 1000) + 25;
         await token.transferWithLocked(buyer.address, ethers.utils.parseEther("5"), release);
         locked = await token.getLockedBalance(buyer.address);
@@ -103,6 +103,5 @@ describe("MyWorldToken", function () {
         await token.transferWithLocked(buyer.address, ethers.utils.parseEther("2"), release);
         locked = await token.getLockedBalance(buyer.address);
         console.log(ethers.utils.formatEther(locked));
-
     });
 });

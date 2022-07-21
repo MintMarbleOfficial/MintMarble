@@ -4,11 +4,11 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 import { ethers } from "hardhat";
-import { MyWorldToken } from "../typechain/MyWorldToken";
+import { MintMarble } from "../typechain/MintMarble";
 
 async function main() {
-    var token: MyWorldToken;
-    const MyWorldtokenFactory = await ethers.getContractFactory("MyWorldToken");
+    var token: MintMarble;
+    const MyWorldtokenFactory = await ethers.getContractFactory("MintMarble");
     token = await MyWorldtokenFactory.deploy();
     //0xC225CCBcdE0344bE003792A652629Bd697C23d71//bsc
     //0xE00DeC05D7601D4a3729B03e451CcD9bc63a4B7e//poly
