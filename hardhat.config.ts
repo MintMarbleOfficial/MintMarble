@@ -41,6 +41,17 @@ const config: HardhatUserConfig = {
             url: `https://polygon-rpc.com/`,
             accounts: JSON.parse(process.env.privatekeys_main === undefined ? "[]" : process.env.privatekeys_main),
         },
+        baobab: {
+            url: "http://172.30.1.191:8551/v1/klaytn/",
+            accounts: JSON.parse(process.env.privatekeys === undefined ? "[]" : process.env.privatekeys),
+            gasPrice: 250000000000,
+        },
+        cypress: {
+            url: "http://121.133.119.92:8551/v1/klaytn/",
+            // url: "https://public-node-api.klaytnapi.com/v1/cypress",
+            accounts: JSON.parse(process.env.privatekeys_main === undefined ? "[]" : process.env.privatekeys_main),
+            gasPrice: 250000000000,
+        },
     },
     gasReporter: {
         enabled: process.env.REPORT_GAS !== undefined,
